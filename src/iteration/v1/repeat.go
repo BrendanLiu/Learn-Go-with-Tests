@@ -1,4 +1,4 @@
-package v1
+package iteration
 
 func Repeat(character string) string {
 	var repeated string
