@@ -6,31 +6,6 @@ import (
 
 func TestWallet(t *testing.T) {
 
-	assertBalance := func(t *testing.T, wallet Wallet, want BitCoin) {
-		got := wallet.Balance()
-
-		if got != want {
-			t.Errorf("got %s want %s", got, want)
-		}
-	}
-
-	assertNoError := func(t *testing.T, got error) {
-		if got != nil {
-			t.Fatal("got an error but didnt want one")
-		}
-	}
-
-	assertError := func(t *testing.T, got error, want error) {
-		if got == nil {
-			// Fatal 如果被调用，将不会进行接下来的测试
-			t.Fatal("didn't get an error but wanted one")
-		}
-
-		if got != want {
-			t.Errorf("got '%s', want '%s'", got, want)
-		}
-	}
-
 	t.Run("Deposit", func(t *testing.T) {
 		wallet := Wallet{}
 		wallet.Deposit(BitCoin(10))
@@ -53,4 +28,32 @@ func TestWallet(t *testing.T) {
 		assertBalance(t, wallet, BitCoin(20))
 		assertError(t, err, InsufficientFundsError)
 	})
+}
+
+func assertBalance(t *testing.T, wallet Wallet, want BitCoin) {
+	t.Helper()
+	got := wallet.Balance()
+
+	if got != want {
+		t.Errorf("got %s want %s", got, want)
+	}
+}
+
+func assertNoError(t *testing.T, got error) {
+	t.Helper()
+	if got != nil {
+		t.Fatal("got an error but didnt want one")
+	}
+}
+
+func assertError(t *testing.T, got error, want error) {
+	t.Helper()
+	if got == nil {
+		// Fatal 如果被调用，将不会进行接下来的测试
+		t.Fatal("didn't get an error but wanted one")
+	}
+
+	if got != want {
+		t.Errorf("got %s, want %s", got, want)
+	}
 }
