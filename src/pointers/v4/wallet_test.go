@@ -39,9 +39,5 @@ func TestWallet(t *testing.T) {
 
 		assertBalance(t, wallet, BitCoin(20))
 		assertError(t, err)
-
-		if err == nil {
-			t.Error("wanted an error but didn't get one")
-		}
 	})
 }
