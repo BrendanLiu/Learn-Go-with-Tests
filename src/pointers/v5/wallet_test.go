@@ -14,6 +14,12 @@ func TestWallet(t *testing.T) {
 		}
 	}
 
+	assertNoError := func(t *testing.T, got error) {
+		if got != nil {
+			t.Fatal("got an error but didnt want one")
+		}
+	}
+
 	assertError := func(t *testing.T, got error, want error) {
 		if got == nil {
 			// Fatal 如果被调用，将不会进行接下来的测试
@@ -28,14 +34,16 @@ func TestWallet(t *testing.T) {
 	t.Run("Deposit", func(t *testing.T) {
 		wallet := Wallet{}
 		wallet.Deposit(BitCoin(10))
-		assertBalance(t, wallet, BitCoin(10))
 
+		assertBalance(t, wallet, BitCoin(10))
 	})
 
-	t.Run("Withdraw", func(t *testing.T) {
+	t.Run("Withdraw with funds", func(t *testing.T) {
 		wallet := Wallet{balance: BitCoin(20)}
-		wallet.Withdraw(BitCoin(10))
+		err := wallet.Withdraw(BitCoin(10))
+
 		assertBalance(t, wallet, BitCoin(10))
+		assertNoError(t, err)
 	})
 
 	t.Run("Withdraw insufficient funds", func(t *testing.T) {
