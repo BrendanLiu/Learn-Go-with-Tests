@@ -32,6 +32,7 @@ func TestWalk(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			var got []string
 			walk(test.Input, func(input string) {
+				// 先处理第一个参数x-test.Input，待walk处理到fn匿名函数时，再执行下方语句
 				got = append(got, input)
 			})
 			if !reflect.DeepEqual(got, test.ExpectedCalls) {
